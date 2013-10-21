@@ -1,0 +1,2 @@
+/home/youki/.virtualenvs/apple/local/lib/python2.7/site-packages/pytz/__init__.py:31: UserWarning: Module readline was already imported from /home/youki/.virtualenvs/apple/lib/python2.7/lib-dynload/readline.x86_64-linux-gnu.so, but /home/youki/.virtualenvs/apple/lib/python2.7/site-packages is being added to sys.path
+  from pkg_resources import resource_stream

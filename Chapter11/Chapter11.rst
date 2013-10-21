@@ -12,6 +12,18 @@ http://glau.ca/?p=340
     import numpy
     import pandas
     import scipy
+
+.. parsed-literal::
+
+    Couldn't import dot_parser, loading of dot files will not be possible.
+
+
+.. parsed-literal::
+
+    /home/youki/.virtualenvs/apple/local/lib/python2.7/site-packages/pytz/__init__.py:31: UserWarning: Module readline was already imported from /home/youki/.virtualenvs/apple/lib/python2.7/lib-dynload/readline.x86_64-linux-gnu.so, but /home/youki/.virtualenvs/apple/lib/python2.7/site-packages is being added to sys.path
+      from pkg_resources import resource_stream
+
+
 11.1 例題：一次元空間上の個体数分布
 -----------------------------------
 
@@ -25,9 +37,10 @@ http://glau.ca/?p=340
     
     def fetch_rdata():
         src = "http://hosho.ees.hokudai.ac.jp/~kubo/stat/iwanamibook/fig/spatial/Y.RData"
-        urllib.urlretrieve(src, 'Y.RData')
+        if (not os.path.exists('data')):
+            os.makedirs('data')
+        urllib.urlretrieve(src, 'data/Y.RData')
         ret = pandas.DataFrame({'Y':com.load_data('Y'), 'm':com.load_data('m')})
-        os.remove('Y.RData')
         return ret
 .. code:: python
 
@@ -63,15 +76,18 @@ http://glau.ca/?p=340
     # 観測ベクトル
     Y = fetch_rdata()['Y'].values
     
-    # 隣接ベクトル
+    # 隣接ベクトル(muの計算に用いる)
     a1 = np.arange(N)
     a2 = map(list, zip(a1-1, a1+1))
     a2[0] = [1]
     a2[-1] = [49]
     A = np.asarray(a2)
     
-    # 重みベクトル
-    W = np.asarray(map(lambda x: [x**(-1)]*x, map(len, B)))
+    # 重みベクトル(muの計算に用いる)
+    W = np.asarray(map(lambda x: [x**(-1)]*x, map(len, A)))
+    
+    # n_jベクトル(sigmaの計算に用いる)
+    Wplus = array([len(w) for w in W])
 .. code:: python
 
     Y
@@ -130,6 +146,20 @@ http://glau.ca/?p=340
 
 .. code:: python
 
+    Wplus
+
+
+
+.. parsed-literal::
+
+    array([1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+           2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+           2, 2, 2, 1])
+
+
+
+.. code:: python
+
     ### hyper priors
     beta = pymc.Normal('beta', mu=0, tau=1.0e-4)
     s = pymc.Uniform('s', lower=0, upper=1.0e+4)
@@ -139,7 +169,8 @@ http://glau.ca/?p=340
     @pymc.stochastic
     def R(tau=tau, value=np.zeros(N)):
         # Calculate mu based on average of neighbors
-        mu = np.array([sum(W[i]*value[list(A[i])])/Wplus[i] for i in xrange(N)])
+        mu = np.array([sum(W[i]*value[A[i]])/Wplus[i] for i in xrange(N)])
+        
         # Scale precision to the number of neighbors
         taux = tau*Wplus
         return pymc.normal_like(value, mu, taux)
@@ -165,12 +196,12 @@ http://glau.ca/?p=340
 
 .. parsed-literal::
 
-    <matplotlib.image.AxesImage at 0xa343c50>
+    <matplotlib.image.AxesImage at 0x5fed850>
 
 
 
 
-.. image:: Chapter11_files/Chapter11_13_1.png
+.. image:: Chapter11_files/Chapter11_14_1.png
 
 
 .. code:: python
@@ -194,7 +225,7 @@ http://glau.ca/?p=340
 
 
 
-.. image:: Chapter11_files/Chapter11_15_1.png
+.. image:: Chapter11_files/Chapter11_16_1.png
 
 
 .. code:: python
@@ -208,7 +239,7 @@ http://glau.ca/?p=340
 
 
 
-.. image:: Chapter11_files/Chapter11_16_1.png
+.. image:: Chapter11_files/Chapter11_17_1.png
 
 
 .. code:: python
@@ -224,11 +255,11 @@ http://glau.ca/?p=340
 .. code:: python
 
     figure(figsize(8,7))
-    draw_figure_11_4(burnin = 500) #betaやsの振る舞いが安定してきたあたりをburninに設定.
+    draw_figure_11_4(burnin = 700) #betaやsの振る舞いが安定してきたあたりをburninに設定.
     plt.show()
 
 
-.. image:: Chapter11_files/Chapter11_18_0.png
+.. image:: Chapter11_files/Chapter11_19_0.png
 
 
 :math:`\beta`\ =2.27 に固定する
@@ -244,7 +275,8 @@ http://glau.ca/?p=340
     @pymc.stochastic
     def R(tau=tau, value=np.zeros(N)):
         # Calculate mu based on average of neighbors
-        mu = np.array([sum(W[i]*value[list(A[i])])/Wplus[i] for i in xrange(N)])
+        mu = np.array([sum(W[i]*value[A[i]])/Wplus[i] for i in xrange(N)])
+        
         # Scale precision to the number of neighbors
         taux = tau*Wplus
         return pymc.normal_like(value, mu, taux)
@@ -275,7 +307,7 @@ http://glau.ca/?p=340
 
 
 
-.. image:: Chapter11_files/Chapter11_21_1.png
+.. image:: Chapter11_files/Chapter11_22_1.png
 
 
 .. code:: python
@@ -301,7 +333,7 @@ http://glau.ca/?p=340
     draw_figure_11_5(burnin=0)
 
 
-.. image:: Chapter11_files/Chapter11_23_0.png
+.. image:: Chapter11_files/Chapter11_24_0.png
 
 
 11.5 空間相関モデルと欠測のある観測データ
