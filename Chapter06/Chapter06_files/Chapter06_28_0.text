@@ -1,0 +1,16 @@
+                 Generalized Linear Model Regression Results                  
+==============================================================================
+Dep. Variable:                      y   No. Observations:                   50
+Model:                            GLM   Df Residuals:                       48
+Model Family:                   Gamma   Df Model:                            1
+Link Function:                    log   Scale:                  0.325084553223
+Method:                          IRLS   Log-Likelihood:                 58.471
+Date:              月, 21 10月 2013   Deviance:                       17.251
+Time:                        09:00:04   Pearson chi2:                     15.6
+No. Iterations:                    11                                         
+==============================================================================
+                 coef    std err          t      P>|t|      [95.0% Conf. Int.]
+------------------------------------------------------------------------------
+Intercept     -1.0403      0.119     -8.759      0.000        -1.273    -0.808
+log(x)         0.6832      0.068      9.992      0.000         0.549     0.817
+==============================================================================

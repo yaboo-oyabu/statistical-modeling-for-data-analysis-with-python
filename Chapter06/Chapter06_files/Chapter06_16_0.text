@@ -1,0 +1,17 @@
+                 Generalized Linear Model Regression Results                  
+==============================================================================
+Dep. Variable:       ['t[0]', 't[1]']   No. Observations:                  100
+Model:                            GLM   Df Residuals:                       97
+Model Family:                Binomial   Df Model:                            2
+Link Function:                  logit   Scale:                             1.0
+Method:                          IRLS   Log-Likelihood:                -133.11
+Date:                Mon, 21 Oct 2013   Deviance:                       123.03
+Time:                        08:49:46   Pearson chi2:                     109.
+No. Iterations:                     7                                         
+==============================================================================
+                 coef    std err          t      P>|t|      [95.0% Conf. Int.]
+------------------------------------------------------------------------------
+Intercept    -19.5361      1.414    -13.818      0.000       -22.307   -16.765
+f[T.T]         2.0215      0.231      8.740      0.000         1.568     2.475
+x              1.9524      0.139     14.059      0.000         1.680     2.225
+==============================================================================
