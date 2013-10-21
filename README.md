@@ -1,31 +1,39 @@
 statistical-modeling-for-data-analysis-with-python
 ==================================================
 
-久保先生の本「データ解析のための統計データモデリング」のRコードをpythonで。
+久保先生の本「データ解析のための統計データモデリング入門」のRコードを
+pythonコードに変換してみたのでまとめました。
+
+はじめに: 注意事項
+------------------
+
+このレポジトリに登録されているコード群は久保本の一読者が、お試しで書い
+たコードです。そのため、コードの一部が正しくないかもしれません。この点
+を理解した上で、適当に参考してください。
 
 pythonコードの実行結果を見る
 ----------------------------
 
-方法1:各Chapterディレクトリにあるrstファイルをgithub上から開く
-
-方法2:各Chapterディレクトリにあるhtmlファイルをダウンロードして開く
+#. 各Chapterディレクトリにあるrstファイルをgithub上から開く
+#. 各Chapterディレクトリにあるhtmlファイルをダウンロードして開く
 
 pythonコードを実行する
 ----------------------
 
-コードの実装はipython notebookを用いて行っています。
-各章のサンプルコードを実行する場合は、ipython notebookを用いて各Chapterディレクトリにあるipynbファイルを開いてください。
-なお、コードを実行するにあたって、必要なpythonライブラリと外部パッケージは以下のとおりです。
+コードの実装はipython notebookを用いて行っています。各章のサンプルコー
+ドを実行する場合は、ipython notebookを用いて各Chapterディレクトリにある
+ipynbファイルを開いてください。なお、作者がコードを実行するときのライブ
+ラリやパッケージの構成は以下の通りです。
 
-required python library:
-- numpy
-- scipy
-- ipython
-- pandas
-- statsmodels
-- pydot
-- matplotlib
-- pymc
+pythonライブラリ:
+- numpy==1.7.1
+- scipy==0.12.0
+- ipython==1.1.0
+- pandas==0.12.0
+- statsmodels==0.5.0
+- pydot==1.0.28
+- matplotlib==1.3.0
+- pymc==2.2
 
-required external package:
+外部パッケージ：
 - graphviz
